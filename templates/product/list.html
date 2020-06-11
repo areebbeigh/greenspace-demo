@@ -1,0 +1,78 @@
+{% extends "base.html" %} {% block media %}
+<style>
+  .product-thumbnail {
+    background: var(--bgurl);
+    background-size: cover;
+    background-position: center;
+  }
+  .product-card {
+    height: 180px;
+    color: #151515;
+  }
+  .product-card:hover {
+    border-color: #000;
+    transition: 0.4s;
+    cursor: pointer;
+  }
+  .product-card .row {
+    height: 100%;
+  }
+  .product-card .row div {
+    max-height: 100%;
+    overflow: hidden;
+  }
+  .product-list a:hover,
+  .product-list a:visited {
+    text-decoration: none !important;
+    color: inherit;
+  }
+</style>
+{% endblock %} {% block body %} {% include "welcome.html" %}
+{% if not products %}
+<p class="text-center text-muted">Oops. No pokemon to choose from yet :(</p>
+{% endif %}
+<div class="row product-list">
+  {% for product in products %}
+  <div class="col-xs-12 col-md-6">
+    <a href="{% url 'product-detail' product.id %}">
+      <div class="product-card card mb-3">
+        <div class="row no-gutters">
+          <div
+            class="col-4 product-thumbnail"
+            style="
+              --bgurl: url({{product.get_image_url}})
+            "
+          ></div>
+          <div class="col-8">
+            <div class="card-body">
+              <h5 class="card-title" style="margin-bottom: 0;">
+                {{product.name | truncatechars:50}}
+              </h5>
+              <p class="card-text">
+                <i>
+                  <small>&#8377;{{product.price}}</small>
+                </i>
+              </p>
+              <p class="card-text">
+                {{product.description | truncatechars:50}}
+              </p>
+              <p class="card-text">
+                <small class="text-muted text-italics"
+                  >Nursery: {{product.owner.username}}</small
+                >
+                <br />
+                <i>
+                  <small class="text-muted"
+                    >Uploaded on {{product.date_created|date:"F j Y P"}}</small
+                  >
+                </i>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

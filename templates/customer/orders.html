@@ -1,0 +1,85 @@
+{% extends "base.html" %} {% load static %} {% block media %}
+<link rel="stylesheet" href="{% static '/css/jquery.dataTables.css' %}" />
+<style>
+  #orders-table {
+    border-bottom: none;
+  }
+  .dataTables_wrapper .row {
+    margin: 0;
+    width: 100%;
+  }
+</style>
+{% endblock %} {% block media_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/dataTables.bootstrap4.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#orders-table").DataTable({
+      dom: "t",
+      paging: false,
+      info: false,
+      searching: false,
+      processing: false,
+      autoWidth: false,
+      columnDefs: [
+        {
+          targets: [1],
+          orderable: false,
+        },
+      ],
+    });
+  });
+</script>
+{% endblock %} {% block body %}
+<h2>Your orders</h2>
+<table id="orders-table" class="table table-sm table-striped">
+  <thead class="thead-dark">
+    <th>
+      Name
+    </th>
+    <th>
+      Seller
+    </th>
+    <th>
+        Status
+    </th>
+    <th>
+      Actions
+    </th>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr>
+      <td>
+        <a href="{% url 'product-detail' order.product.id %}">
+          {{order.product.name}}
+        </a>
+      </td>
+      <td>
+        {{order.seller.username}}
+      </td>
+      <td>
+          {{order.status}}
+      </td>
+      <td>
+          {% if order.status == 'Pending' %}
+            <form action="{% url 'customer-order-done' order.id %}" method="post">
+            {%csrf_token%}
+            <button
+              type="submit"
+              name="cancel"
+              value="cancel"
+              class="btn btn-danger btn-sm"
+              >Cancel</a
+            >
+        </form>
+        {% else %}
+        -
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br />
+{% endblock %}

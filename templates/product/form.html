@@ -1,0 +1,25 @@
+<form enctype="multipart/form-data" method="post">
+    {% csrf_token %} {% if form.errors %} {{form.errors}} {% endif %}
+    <div class="form-group input-group">
+      {{form.name}}
+    </div>
+    <div class="form-group input-group">
+      {{form.description}}
+    </div>
+    <div class="form-group input-group">
+      {{form.price}}
+    </div>
+    <div class="input-group mb-3">
+      <div class="custom-file">
+        {{form.image}}
+        <label class="custom-file-label" for="id_image">A cute little pic for your plant</label>
+      </div>
+    </div>
+    <div class="form-group input-group">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+    </div>
+  </form>

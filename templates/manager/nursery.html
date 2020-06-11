@@ -1,0 +1,78 @@
+{% extends "base.html" %} {% load static %} {% block media %}
+<link rel="stylesheet" href="{% static '/css/jquery.dataTables.css' %}" />
+<style>
+  #products-table {
+    border-bottom: none;
+  }
+  .dataTables_wrapper .row {
+    margin: 0;
+    width: 100%;
+  }
+</style>
+{% endblock %} {% block media_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/dataTables.bootstrap4.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#products-table").DataTable({
+      dom: "t",
+      paging: false,
+      info: false,
+      searching: false,
+      processing: false,
+      autoWidth: false,
+      columnDefs: [
+        {
+          targets: [1],
+          orderable: false,
+        },
+      ],
+    });
+  });
+</script>
+{% endblock %} {% block body %}
+<h2>Your nursery</h2>
+<table id="products-table" class="table table-sm table-striped">
+  <thead class="thead-dark">
+    <th>
+      Name
+    </th>
+    <th>
+      Orders
+    </th>
+    <th>
+      Actions
+    </th>
+  </thead>
+  <tbody>
+    {% for product in products %}
+    <tr>
+      <td>
+        <a href="{% url 'product-detail' product.id %}">
+          {{product.name}}
+        </a>
+      </td>
+      <td>
+        {{product.get_order_count}}
+      </td>
+      <td>
+        <a
+          href="{% url 'product-edit' product.id %}"
+          type="button"
+          class="btn btn-info btn-sm"
+          >Modify</a
+        >
+        <a
+          href="{% url 'product-delete' product.id %}"
+          type="button"
+          class="btn btn-danger btn-sm"
+          >Delete</a
+        >
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{% url 'product-create' %}" class="class btn btn-sm btn-info">Add a plant</a>
+<br />
+{% endblock %}

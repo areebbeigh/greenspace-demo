@@ -1,0 +1,8 @@
+confusable-homoglyphs==3.2.0
+Django==2.2
+django-registration==3.1
+Pillow==7.1.2
+pycodestyle==2.6.0
+pytz==2020.1
+sqlparse==0.3.1
+toml==0.10.1

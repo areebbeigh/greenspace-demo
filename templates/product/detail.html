@@ -1,0 +1,62 @@
+{% extends "base.html" %}{% block media %}
+<style>
+  .product-thumbnail {
+    background: var(--bgurl);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: top;
+  }
+  .product-card {
+    color: #151515;
+  }
+  .product-card .row {
+    height: 100%;
+  }
+  .product-card .row div {
+    max-height: 100%;
+    overflow: hidden;
+  }
+</style>
+{% endblock %} {% block body %}
+<div class="product-card card mb-3">
+  <div class="card-header">{{product.name}}</div>
+  <div class="row no-gutters">
+    <div
+      class="col-4 product-thumbnail"
+      style="
+        --bgurl: url({{product.get_image_url}})
+      "
+    ></div>
+    <div class="col-8">
+      <div class="card-body">
+        <p class="card-text">
+          <i>
+            <small>&#8377;{{product.price}}</small>
+          </i>
+        </p>
+        <p class="card-text">
+          {{product.description}}
+        </p>
+        <p class="card-text">
+          <small class="text-muted text-italics"
+            >Nursery: {{product.owner.username}}</small
+          >
+          <br />
+          <i>
+            <small class="text-muted"
+              >Uploaded on {{product.date_created|date:"F j Y P"}}</small
+            >
+          </i>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer d-flex justify-content-end">
+    <button type="button" class="btn btn-info mr-2">Add to Wishlist</button>
+    <form action="{% url 'order-create' product.id %}" method="post">
+        {% csrf_token %}
+      <button type="submit" class="btn btn-success">Place Order</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
